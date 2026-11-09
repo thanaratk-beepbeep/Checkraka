@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>เทียบราคา - อันไหนคุ้มสุด?</title>
+    <!-- ใช้ Tailwind CSS เพื่อความรวดเร็วและสวยงามบนมือถือ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ซ่อนลูกศรใน input type number เพื่อความสะอาดตาบนหน้าจอมือถือ */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-sans text-gray-200 pb-10">
+
+    <div class="max-w-md mx-auto bg-gray-800 min-h-screen shadow-sm sm:min-h-0 sm:mt-6 sm:rounded-2xl sm:p-2 sm:border border-gray-700">
+        <!-- Header -->
+        <div class="bg-gray-950 text-gray-100 text-center py-4 rounded-b-2xl sm:rounded-xl shadow-md mb-6">
+            <h1 class="text-2xl font-bold">เทียบราคา</h1>
+            <p class="text-sm opacity-80 text-gray-400">คำนวณ บาท/หน่วย อันไหนคุ้มสุด?</p>
+        </div>
+
+        <div class="px-4 space-y-4">
+            <!-- สินค้าที่ 1 -->
+            <div id="card-1" class="border-2 border-gray-700 rounded-xl p-4 transition-colors duration-300 bg-gray-800">
+                <h2 class="font-bold text-lg mb-3 text-gray-200 flex justify-between items-center">
+                    <span>📦 ตัวเลือกที่ 1</span>
+                </h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">ราคา (บาท)</label>
+                        <!-- inputmode="decimal" ช่วยให้แป้นพิมพ์มือถือแสดงตัวเลขพร้อมจุดทศนิยม -->
+                        <input type="number" id="price-1" inputmode="decimal" class="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-lg p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="เช่น 100">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">ปริมาณ (หน่วย)</label>
+                        <input type="number" id="qty-1" inputmode="decimal" class="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-lg p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="เช่น 750">
+                    </div>
+                </div>
+                <div id="result-1" class="mt-3 text-sm font-medium hidden"></div>
+            </div>
+
+            <!-- สินค้าที่ 2 -->
+            <div id="card-2" class="border-2 border-gray-700 rounded-xl p-4 transition-colors duration-300 bg-gray-800">
+                <h2 class="font-bold text-lg mb-3 text-gray-200 flex justify-between items-center">
+                    <span>📦 ตัวเลือกที่ 2</span>
+                </h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">ราคา (บาท)</label>
+                        <input type="number" id="price-2" inputmode="decimal" class="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-lg p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="เช่น 150">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">ปริมาณ (หน่วย)</label>
+                        <input type="number" id="qty-2" inputmode="decimal" class="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-lg p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="เช่น 1000">
+                    </div>
+                </div>
+                <div id="result-2" class="mt-3 text-sm font-medium hidden"></div>
+            </div>
+
+            <!-- สินค้าที่ 3 -->
+            <div id="card-3" class="border-2 border-gray-700 rounded-xl p-4 transition-colors duration-300 bg-gray-800">
+                <h2 class="font-bold text-lg mb-3 text-gray-200 flex justify-between items-center">
+                    <span>📦 ตัวเลือกที่ 3 (ถ้ามี)</span>
+                </h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">ราคา (บาท)</label>
+                        <input type="number" id="price-3" inputmode="decimal" class="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-lg p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="เช่น 200">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">ปริมาณ (หน่วย)</label>
+                        <input type="number" id="qty-3" inputmode="decimal" class="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-lg p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="เช่น 1500">
+                    </div>
+                </div>
+                <div id="result-3" class="mt-3 text-sm font-medium hidden"></div>
+            </div>
+
+            <!-- ปุ่มดำเนินการ -->
+            <div class="pt-4 space-y-3">
+                <button onclick="calculate()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-transform transform active:scale-95">
+                    คำนวณความคุ้มค่า
+                </button>
+                <button onclick="clearAll()" class="w-full bg-gray-700 hover:bg-gray-600 active:bg-gray-500 text-gray-300 font-semibold py-3 rounded-xl transition-colors">
+                    ล้างข้อมูลทั้งหมด
+                </button>
+            </div>
+            
+            <!-- ข้อความสรุปผล -->
+            <div id="summary-msg" class="text-center text-lg font-bold mt-4 hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            let items = [];
+            let validCount = 0;
+
+            // วนลูปอ่านค่าและคำนวณทั้ง 3 ช่อง
+            for (let i = 1; i <= 3; i++) {
+                let priceInput = document.getElementById('price-' + i).value;
+                let qtyInput = document.getElementById('qty-' + i).value;
+                
+                let price = parseFloat(priceInput);
+                let qty = parseFloat(qtyInput);
+                
+                let card = document.getElementById('card-' + i);
+                let resultDiv = document.getElementById('result-' + i);
+
+                // รีเซ็ต Style เดิมออกก่อน
+                card.className = "border-2 border-gray-700 rounded-xl p-4 transition-colors duration-300 bg-gray-800";
+                resultDiv.classList.add('hidden');
+                resultDiv.innerHTML = "";
+
+                // ตรวจสอบว่าใส่ค่าครบและมากกว่า 0
+                if (!isNaN(price) && !isNaN(qty) && price > 0 && qty > 0) {
+                    // สูตรคำนวณ: ราคา ต่อ 1 หน่วย
+                    let pricePerUnit = price / qty;
+                    
+                    items.push({ 
+                        id: i, 
+                        ppu: pricePerUnit, 
+                        card: card, 
+                        resultDiv: resultDiv 
+                    });
+                    
+                    // แสดงราคาต่อหน่วยใน Card
+                    resultDiv.innerHTML = `ตกหน่วยละ <b class="text-white">${pricePerUnit.toFixed(4)}</b> บาท`;
+                    resultDiv.className = "mt-3 text-sm font-medium text-gray-300 block";
+                    validCount++;
+                }
+            }
+
+            let summaryMsg = document.getElementById('summary-msg');
+
+            if (validCount < 2) {
+                summaryMsg.innerHTML = "⚠️ กรุณากรอกข้อมูลอย่างน้อย 2 รายการเพื่อเปรียบเทียบ";
+                summaryMsg.className = "text-center text-orange-400 font-bold mt-4 block";
+                return;
+            }
+
+            // หาค่าที่ถูกที่สุด (น้อยที่สุด)
+            let minPricePerUnit = Math.min(...items.map(item => item.ppu));
+            
+            // กรองหาไอเท็มที่คุ้มที่สุด (เผื่อมีคุ้มเท่ากันหลายอัน)
+            let bestItems = items.filter(item => item.ppu === minPricePerUnit);
+
+            // ไฮไลต์ไอเท็มที่คุ้มที่สุด
+            bestItems.forEach(item => {
+                // เปลี่ยนสี Card ให้ดูเด่นในโหมดมืด (ขอบเขียว พื้นหลังเขียวโปร่งแสง)
+                item.card.className = "border-2 border-emerald-500 bg-emerald-900/30 rounded-xl p-4 transition-colors duration-300 shadow-md transform scale-[1.02]";
+                
+                // เพิ่มข้อความ "คุ้มที่สุด!"
+                item.resultDiv.innerHTML += ` <span class="text-emerald-400 font-bold ml-2">✅ คุ้มที่สุด!</span>`;
+                item.resultDiv.className = "mt-3 text-sm font-medium text-emerald-400 block";
+            });
+
+            summaryMsg.innerHTML = "🎉 คำนวณเสร็จสิ้น! ดูแถบสีเขียวได้เลย";
+            summaryMsg.className = "text-center text-emerald-400 font-bold mt-4 block";
+        }
+
+        function clearAll() {
+            // ล้างค่าใน Input ทั้งหมดและรีเซ็ต UI
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById('price-' + i).value = "";
+                document.getElementById('qty-' + i).value = "";
+                
+                let card = document.getElementById('card-' + i);
+                let resultDiv = document.getElementById('result-' + i);
+                
+                card.className = "border-2 border-gray-700 rounded-xl p-4 transition-colors duration-300 bg-gray-800";
+                resultDiv.classList.add('hidden');
+                resultDiv.innerHTML = "";
+            }
+            document.getElementById('summary-msg').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
